@@ -1,0 +1,70 @@
+﻿@page "/ShoppingCart"
+@using System.Globalization;
+@inherits ShoppingCartBase
+
+
+
+@if (ShoppingCartItems == null && ErrorMessage == null)
+{
+    <DisplaySpinner/>
+}
+else if(ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+}
+else
+{
+    <h3 class="mb-5">Shopping Cart</h3>
+    @if (ShoppingCartItems.Count() > 0)
+    {
+        <div class="row mb-5">
+            <div class="col-md-9">
+
+                @foreach (var item in ShoppingCartItems)
+                {
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <img src="@item.ProductImageURL" width="300" class="img-thumbnail">
+                        </div>
+
+                        <div class="col-md-8">
+                            <h5>@item.ProductName</h5>
+                            <div class="mb-4">@item.ProductDescription</div>
+                            <span>
+                                Price: <b>@item.Price.ToString("C", new CultureInfo("en-US"))</b>
+                                <input type="number" @bind="@item.Qty">
+                                <button  class="btn btn-info btn-sm update-qty"
+                                    @onclick="(() => UpdateQtyCartItem_Click(item.ProductId, item.CartId, item.Qty))">Update Quantity
+                                </button>
+                            </span>
+                            <div>
+                                <button class="btn btn-danger sm" 
+                                @onclick="(() => DeleteCartItem_Click(item.ProductId, item.CartId))"><i class="oi oi-trash"></i>
+                            </button>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+
+            <div class="col-md-3">
+                <h5>Cart Summary</h5>
+                <div class="mt-2">                                       @* &nbsp - non-breaking space*@
+                    <div>Total - (@TotalQuantity items)&nbsp; <b>@TotalPrice</b></div>
+                    <a href="Checkout" class="btn btn-success">
+                       <span class="oi oi-credit-card"></span>&nbsp;Proceed to Checkout
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <h4>Shopping Cart is Empty</h4>
+    }
+
+}

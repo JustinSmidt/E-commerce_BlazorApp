@@ -1,0 +1,47 @@
+﻿@page "/Checkout"
+@using System.Globalization;
+@inherits CheckoutBase
+
+<h3>Checkout</h3>
+
+@if(ShoppingCartItems == null)
+{
+    <DisplaySpinner></DisplaySpinner>
+}
+else
+{
+    <div class="col-md-8">
+        <h4>Summary of items to be purchased</h4>
+        @if(ShoppingCartItems.Count() > 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in ShoppingCartItems)
+                    {
+                        <tr>
+                            <td>@item.Qty x @item.ProductName</td>
+                            <td>@item.TotalPrice.ToString("C",new CultureInfo("en-US"))</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td>Total</td>
+                        <td><b>@PaymentAmount.ToString("C",new CultureInfo("en-US"))</b></td>
+                    </tr>
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>You currently have no items in your shopping cart</p>
+        }
+    </div>
+}
+
+
+

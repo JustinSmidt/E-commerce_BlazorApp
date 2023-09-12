@@ -1,0 +1,86 @@
+﻿@inject IShoppingCartService shoppingCartService
+@implements IDisposable
+
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href=""><span class="fas fa-shopping-cart" aria-hidden="true"></span>ShopOnline</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span>&nbsp; Home
+            </NavLink>
+        </div>
+        
+         <div class="nav-item px-3">
+            <NavLink class="nav-link" href="Beauty">
+                <span class="fas fa-spa" aria-hidden="true"></span>&nbsp; Beauty
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="Furniture">
+                <span class="fas fa-couch" aria-hidden="true"></span>&nbsp; Furniture
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="Electronics">
+                <span class="fas fa-headphones" aria-hidden="true"></span>&nbsp; Electronics
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">                         @* https://fontawesome.com/v4/icons/ for icons*@
+            <NavLink class="nav-link" href="Shoes">
+                <span class="fas fa-shoe-prints" aria-hidden="true"></span>&nbsp; Shoes
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3 d-sm-none">
+            <NavLink class="nav-link" href="ShoppingCart">
+                <span class="fas fa-shopping-cart" aria-hidden="true"></span> Shopping Cart (<b>@shoppingCartItemsCount</b>)
+            </NavLink>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private int shoppingCartItemsCount = 0;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    protected override void OnInitialized()
+    {
+        shoppingCartService.OnShoppingCartChanged += ShoppingCartChanged;
+    }
+
+    private void ShoppingCartChanged(int totalQty)
+    {
+        shoppingCartItemsCount = totalQty;
+
+        //built in component to tell blazor to rerender the relevant razor component
+        StateHasChanged();
+    }
+
+    void IDisposable.Dispose()
+    {
+        //unsubscribing from event
+        shoppingCartService.OnShoppingCartChanged -= ShoppingCartChanged;
+    }
+
+}

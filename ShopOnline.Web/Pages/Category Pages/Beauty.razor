@@ -1,0 +1,28 @@
+﻿@page "/Beauty"
+
+@using ShopOnline.Models.Dtos;
+@inherits ProductsBase
+
+<h3>Beauty</h3>
+
+
+@if (Products == null)
+{
+    <DisplaySpinner />
+}
+else
+{
+    var productCount = Products.Count();
+
+    @if (productCount > 0)
+    {
+        var prod = GetProductsByCategory("Beauty");
+
+        <div class="row">          
+            <DisplayProducts Products="@prod"></DisplayProducts>
+        </div>
+
+    }
+
+}
+

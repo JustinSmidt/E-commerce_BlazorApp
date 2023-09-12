@@ -1,0 +1,27 @@
+﻿@page "/Electronics"
+
+@using ShopOnline.Models.Dtos;
+@inherits ProductsBase
+
+<h3>Electronics</h3>
+
+
+@if (Products == null)
+{
+        <DisplaySpinner />
+}
+else
+{
+    var productCount = Products.Count();
+
+    @if (productCount > 0)
+    {
+        var prod = GetProductsByCategory("Electronics");
+
+                <div class="row">
+            <DisplayProducts Products="@prod"></DisplayProducts>
+                </div>
+
+    }
+
+}

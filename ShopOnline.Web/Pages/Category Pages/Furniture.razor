@@ -1,0 +1,28 @@
+﻿@page "/Furniture"
+@using ShopOnline.Models.Dtos;
+@inherits ProductsBase
+
+<h3>Furniture</h3>
+
+
+@if (Products == null)
+{
+    <DisplaySpinner />
+}
+else
+{  
+    var productCount = Products.Count();
+
+    @if (productCount > 0)
+    {    
+        var prod = GetProductsByCategory("Furniture");
+
+        <div class="row">
+            <DisplayProducts Products="@prod"></DisplayProducts>
+        </div>
+
+    }
+
+}
+
+
